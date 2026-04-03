@@ -4,423 +4,1033 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kapil Singh – Operations Team Lead</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --gold:#d4a853;--gold2:#f0c96a;--gold3:rgba(212,168,83,0.12);
-  --muted:#8a8a9a;--border:rgba(212,168,83,0.22);
-  --text:#ffffff;--text2:rgba(255,255,255,0.6);
-  --bg:#0a0a0f;--bg2:#13131a;--card:rgba(255,255,255,0.04);
-  --nav-bg:rgba(10,10,15,0.9);
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c8a96e;
+  --gold2: #e8c98a;
+  --gold3: rgba(200,169,110,0.1);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.12);
+  --muted: #6b7280;
+  --border: rgba(200,169,110,0.18);
+  --border2: rgba(255,255,255,0.07);
+  --text: #f1ede6;
+  --text2: rgba(241,237,230,0.55);
+  --bg: #0c0b09;
+  --bg2: #121109;
+  --bg3: #171510;
+  --card: rgba(255,255,255,0.03);
+  --nav-h: 60px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
 }
-[data-theme="light"]{
-  --gold:#b8892a;--gold2:#c9971e;--gold3:rgba(184,137,42,0.12);
-  --muted:#666;--border:rgba(184,137,42,0.25);
-  --text:#1a1a1a;--text2:rgba(26,26,26,0.62);
-  --bg:#f4f1eb;--bg2:#ebe7df;--card:rgba(0,0,0,0.04);
-  --nav-bg:rgba(244,241,235,0.92);
+
+[data-theme="light"] {
+  --gold: #9a7340;
+  --gold2: #b8892a;
+  --gold3: rgba(154,115,64,0.1);
+  --border: rgba(154,115,64,0.2);
+  --border2: rgba(0,0,0,0.07);
+  --text: #1c1814;
+  --text2: rgba(28,24,20,0.55);
+  --bg: #faf7f2;
+  --bg2: #f3ede4;
+  --bg3: #ede5d8;
+  --card: rgba(0,0,0,0.025);
+  --nav-h: 60px;
 }
-html{scroll-behavior:smooth}
-body{
-  font-family:'Outfit',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  transition:background .35s,color .35s;
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* ── BACKGROUND CANVAS ── */
+#bgCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
 }
 
 /* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:900;
-  padding:.9rem 3rem;
-  display:flex;align-items:center;justify-content:space-between;
-  transition:background .35s;
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 800;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+  transition: background 0.3s, border-color 0.3s;
 }
-nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gold2);letter-spacing:.06em;font-style:italic}
-.nav-right{display:flex;align-items:center;gap:2rem}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{color:var(--text2);text-decoration:none;font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;transition:color .25s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .25s}
-.nav-links a:hover{color:var(--gold2)}
-.nav-links a:hover::after{transform:scaleX(1)}
-.theme-toggle{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:20px;width:50px;height:26px;cursor:pointer;
-  position:relative;flex-shrink:0;
+nav.scrolled {
+  background: rgba(12,11,9,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border2);
 }
-.theme-toggle::before{
-  content:'';position:absolute;top:3px;left:3px;
-  width:18px;height:18px;border-radius:50%;
-  background:var(--gold);transition:transform .3s;
-}
-[data-theme="light"] .theme-toggle::before{transform:translateX(22px)}
+[data-theme="light"] nav.scrolled { background: rgba(250,247,242,0.9); }
 
-/* ── OTW BADGE ── */
-.otw-badge{
-  position:fixed;bottom:1.8rem;right:1.8rem;z-index:800;
-  background:#0f2e0f;border:1px solid #2d7a2d;color:#5cd65c;
-  padding:.55rem 1.1rem;border-radius:20px;font-size:.73rem;
-  font-weight:500;letter-spacing:.06em;display:flex;align-items:center;gap:7px;
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--gold2);
+  letter-spacing: 0.02em;
 }
-.otw-dot{width:7px;height:7px;border-radius:50%;background:#5cd65c;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+.nav-links a:hover { color: var(--gold2); }
+
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+.theme-btn {
+  width: 36px; height: 20px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+}
+.theme-btn::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  transition: transform 0.3s;
+}
+[data-theme="light"] .theme-btn::after { transform: translateX(16px); }
+
+/* ── OTW ── */
+.otw {
+  position: fixed;
+  bottom: 1.5rem; right: 1.5rem;
+  z-index: 700;
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.25);
+  color: var(--green);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+.otw-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
 /* ── HERO ── */
-.hero{
-  min-height:100vh;
-  display:flex;align-items:center;
-  padding:7rem 6rem 4rem;
-  position:relative;overflow:hidden;
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + 5rem) 5rem 5rem;
+  z-index: 1;
 }
-.hero-bg-circle{
-  position:absolute;right:-180px;top:50%;
-  transform:translateY(-50%);
-  width:660px;height:660px;border-radius:50%;
-  border:1px solid var(--border);
-  animation:spin 45s linear infinite;
-  pointer-events:none;
+
+.hero-inner {
+  max-width: 720px;
+  position: relative;
+  z-index: 2;
 }
-@keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
-.hero-layout{
-  display:grid;grid-template-columns:1fr auto;
-  gap:3rem;align-items:center;width:100%;position:relative;z-index:2;
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  letter-spacing: 0.06em;
 }
-.hero-photo{
-  width:200px;height:200px;border-radius:50%;
-  border:2px solid var(--gold);overflow:hidden;flex-shrink:0;
-  background:var(--gold3);display:flex;align-items:center;justify-content:center;
+.hero-tag::before { content: '//'; opacity: 0.5; }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
 }
-.hero-photo-init{
-  font-family:'Cormorant Garamond',serif;
-  font-size:4.5rem;color:var(--gold2);font-weight:700;
+.h1-line1 { display: block; color: var(--text); }
+.h1-line2 {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold2);
+  font-size: 0.82em;
 }
-.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:1.4rem}
-.eyebrow-line{width:36px;height:1px;background:var(--gold)}
-.eyebrow-text{font-size:.73rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:500}
-.hero h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,7vw,5.5rem);
-  line-height:1.05;font-weight:700;margin-bottom:.7rem;
+
+.hero-typing {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text2);
+  margin-bottom: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.hero h1 .name-first{display:block;color:var(--text)}
-.hero h1 .name-last{display:block;color:transparent;-webkit-text-stroke:1px var(--gold);font-style:italic}
-.typing-wrap{
-  font-size:1rem;color:var(--text2);margin-bottom:1.4rem;
-  min-height:1.5rem;display:flex;align-items:center;gap:4px;
+.typing-prompt { color: var(--gold); }
+.typing-word { color: var(--text); }
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--gold);
+  vertical-align: middle;
+  animation: cursor-blink 0.7s step-end infinite;
 }
-.typing-prefix{font-weight:300}
-.typing-word{color:var(--gold2);font-weight:500}
-.typing-cur{display:inline-block;width:2px;height:1em;background:var(--gold);vertical-align:middle;animation:blink .7s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hero-sub{font-size:.97rem;color:var(--text2);font-weight:300;line-height:1.9;max-width:500px;margin-bottom:1.8rem}
-.hero-contacts{display:flex;flex-wrap:wrap;gap:1.2rem;margin-bottom:1.8rem}
-.hero-contacts a{
-  color:var(--text2);text-decoration:none;font-size:.82rem;
-  display:flex;align-items:center;gap:7px;transition:color .25s;
+@keyframes cursor-blink { 50%{opacity:0} }
+
+.hero-desc {
+  font-size: 1rem;
+  color: var(--text2);
+  line-height: 1.9;
+  font-weight: 300;
+  max-width: 520px;
+  margin-bottom: 2.2rem;
 }
-.hero-contacts a:hover{color:var(--gold2)}
-.ci{width:13px;height:13px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;opacity:.65}
-.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;margin-bottom:1.2rem}
-.social-links{display:flex;gap:.7rem;flex-wrap:wrap}
-.social-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 14px;border:1px solid var(--border);
-  color:var(--text2);text-decoration:none;font-size:.76rem;
-  border-radius:2px;transition:all .25s;
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  color: var(--text2);
 }
-.social-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-meta-item svg { stroke: var(--gold); flex-shrink: 0; }
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
 
 /* ── BUTTONS ── */
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:11px 26px;font-family:'Outfit',sans-serif;
-  font-size:.84rem;font-weight:500;letter-spacing:.05em;
-  text-decoration:none;cursor:pointer;
-  position:relative;overflow:hidden;
-  transition:transform .25s;border-radius:2px;border:none;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
 }
-.btn::before{
-  content:'';position:absolute;inset:0;
-  transform:translateX(-101%);
-  transition:transform .38s cubic-bezier(.4,0,.2,1);
+.btn:hover { transform: translateY(-2px); }
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--bg);
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
 }
-.btn:hover::before{transform:translateX(0)}
-.btn:hover{transform:translateY(-2px)}
-.btn span{position:relative;z-index:1}
-.btn-gold{background:var(--gold);color:#0a0a0f}
-.btn-gold::before{background:var(--gold2)}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
-.btn-ghost::before{background:var(--gold3)}
+.btn-primary:hover { background: var(--gold2); box-shadow: 0 8px 24px rgba(200,169,110,0.25); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold2); background: var(--gold3); }
+
+.social-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.social-pill:hover { border-color: var(--gold); color: var(--gold2); }
+
+/* ── CUSTOM CURSOR ── */
+*, *::before, *::after { cursor: none !important; }
+.cursor-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, background 0.2s, width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s, opacity 0.25s;
+  opacity: 0.6;
+}
+.cursor-ring.hovering {
+  width: 56px; height: 56px;
+  border-color: var(--gold2);
+  opacity: 1;
+}
+.cursor-dot.hovering {
+  width: 4px; height: 4px;
+  background: var(--gold2);
+}
+
+/* ── HERO SIDE ── */
+.hero-avatar {
+  position: absolute;
+  right: 5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Outer container — no rotation, just sizes the space */
+.avatar-wrap {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Each orbit ring is absolutely centered via top/left + negative margin.
+   Keyframes ONLY rotate — no translate conflict. */
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+.orbit-1 {
+  width: 220px; height: 220px;
+  top: 50%; left: 50%;
+  margin-top: -110px; margin-left: -110px;
+  border-color: rgba(200,169,110,0.4);
+  animation: spin-cw 18s linear infinite;
+}
+.orbit-2 {
+  width: 270px; height: 270px;
+  top: 50%; left: 50%;
+  margin-top: -135px; margin-left: -135px;
+  border-color: rgba(200,169,110,0.2);
+  animation: spin-ccw 28s linear infinite;
+}
+.orbit-3 {
+  width: 320px; height: 320px;
+  top: 50%; left: 50%;
+  margin-top: -160px; margin-left: -160px;
+  border-color: rgba(200,169,110,0.08);
+  animation: spin-cw 42s linear infinite;
+}
+
+/* Glowing dots on orbit-1 */
+.orbit-1::before, .orbit-1::after {
+  content: '';
+  position: absolute;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 2px var(--gold);
+}
+.orbit-1::before { top: -3.5px; left: calc(50% - 3.5px); }
+.orbit-1::after  { bottom: -3.5px; left: calc(50% - 3.5px); }
+
+/* Glowing dot on orbit-2 */
+.orbit-2::before {
+  content: '';
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold2);
+  box-shadow: 0 0 8px var(--gold2);
+  right: -2.5px;
+  top: calc(50% - 2.5px);
+}
+
+@keyframes spin-cw  { from { transform: rotate(0deg);    } to { transform: rotate(360deg);  } }
+@keyframes spin-ccw { from { transform: rotate(0deg);    } to { transform: rotate(-360deg); } }
+
+.avatar-inner {
+  position: relative;
+  z-index: 2;
+  width: 170px; height: 170px;
+  border-radius: 50%;
+  background: var(--gold3);
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--gold2);
+  box-shadow: 0 0 40px rgba(200,169,110,0.12), inset 0 0 30px rgba(200,169,110,0.06);
+}
 
 /* ── SCROLL HINT ── */
-.scroll-hint{
-  position:absolute;bottom:2rem;left:6rem;
-  display:flex;align-items:center;gap:10px;
-  color:var(--text2);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text2);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  z-index: 2;
 }
-.scroll-line{width:1px;height:46px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2s infinite}
-@keyframes spulse{0%,100%{opacity:.3}50%{opacity:1}}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
-/* ── STATS ── */
-.stats-bar{
-  position:relative;z-index:1;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  background:var(--bg2);
+/* ── STATS STRIP ── */
+.stats {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
 }
-.stat-cell{
-  padding:2.2rem 1.5rem;text-align:center;
-  border-right:1px solid var(--border);
-  transition:background .3s;
+.stat {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
 }
-.stat-cell:last-child{border-right:none}
-.stat-cell:hover{background:var(--gold3)}
-.stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:700;color:var(--gold2);
-  display:block;line-height:1;margin-bottom:5px;
+.stat:last-child { border-right: none; }
+.stat:hover { background: var(--gold3); }
+.stat-n {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--gold2);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
 }
-.stat-lbl{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.stat-l {
+  font-size: 0.67rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
 
-/* ── VISITOR ── */
-.visitor-strip{
-  background:var(--bg);border-bottom:1px solid var(--border);
-  padding:1rem 6rem;
-  display:flex;align-items:center;justify-content:space-between;
+/* ── LIVE STRIP ── */
+.live-strip {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border2);
+  padding: 0.75rem 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.visitor-left{display:flex;align-items:center;gap:.7rem;font-size:.82rem;color:var(--text2)}
-.vlive{width:7px;height:7px;border-radius:50%;background:#5cd65c;animation:pulse 1.5s infinite}
-.visitor-count{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold2);font-weight:700}
-.visitor-right{font-size:.72rem;color:var(--muted)}
+.live-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-family: var(--font-mono);
+}
+.live-count {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--gold2);
+  font-weight: 700;
+}
+.live-right { font-size: 0.7rem; color: var(--muted); font-family: var(--font-mono); }
 
-/* ── SECTION COMMON ── */
-.section{padding:5.5rem 6rem;position:relative}
-.section.alt{background:var(--bg2)}
-.sec-label{display:inline-flex;align-items:center;gap:9px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:.6rem}
-.sec-label::before{content:'';width:22px;height:1px;background:var(--gold)}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:600;line-height:1.2;color:var(--text);margin-bottom:3rem}
-.sec-title em{color:var(--gold2);font-style:italic}
+/* ── SECTIONS ── */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 5rem;
+}
+.section.alt { background: var(--bg2); }
+
+.sec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.sec-eyebrow::before { content: '//'; opacity: 0.5; }
+
+.sec-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 3rem;
+}
+.sec-title em { font-style: italic; color: var(--gold2); }
 
 /* ── DASHBOARD ── */
-.dash-box{border:1px solid var(--border);padding:1.8rem;background:var(--bg2)}
-.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-.dash-heading{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
-.dash-live{display:flex;align-items:center;gap:6px;font-size:.73rem;color:#5cd65c}
-.dash-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.dash-metric{background:var(--card);border:1px solid var(--border);padding:1.2rem;text-align:center;transition:border-color .25s}
-.dash-metric:hover{border-color:var(--gold)}
-.dm-num{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;color:var(--gold2);display:block;line-height:1;margin-bottom:4px}
-.dm-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
-.dash-bars{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.bar-row{margin-bottom:.9rem}
-.bar-top{display:flex;justify-content:space-between;font-size:.76rem;color:var(--text2);margin-bottom:5px}
-.bar-pct{color:var(--gold);font-weight:500}
-.bar-track{height:5px;background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;width:0;transition:width 1.3s cubic-bezier(.4,0,.2,1)}
-.cw-strip{
-  display:flex;align-items:center;gap:.9rem;
-  background:var(--gold3);border:1px solid var(--border);
-  border-left:3px solid var(--gold);padding:.9rem 1.2rem;margin-top:1.5rem;
+.dash {
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  overflow: hidden;
 }
-.cw-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:pulse 1.5s infinite;flex-shrink:0}
-.cw-text{font-size:.86rem;color:var(--text2)}
-.cw-text strong{color:var(--gold2)}
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+.dash-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+.dash-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--green);
+}
+.dash-body { padding: 1.5rem; }
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metric {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  padding: 1.2rem;
+  text-align: center;
+  transition: border-color 0.25s;
+}
+.metric:hover { border-color: var(--gold); }
+.metric-n {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold2);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metric-l {
+  font-size: 0.66rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-family: var(--font-mono);
+}
+
+.bar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.bar-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.bar-item { margin-bottom: 0.85rem; }
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text2);
+  margin-bottom: 5px;
+}
+.bar-pct { color: var(--gold); font-family: var(--font-mono); font-size: 0.72rem; }
+.bar-track {
+  height: 4px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.current-work {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--green-dim);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-left: 3px solid var(--green);
+  padding: 0.85rem 1.2rem;
+  margin-top: 1.5rem;
+  font-size: 0.84rem;
+  color: var(--text2);
+}
+.current-work strong { color: var(--green); }
 
 /* ── ABOUT ── */
-.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
-.about-body p{color:var(--text2);line-height:1.95;margin-bottom:1.1rem;font-weight:300}
-.info-cards{display:flex;flex-direction:column;gap:.9rem}
-.info-card{
-  border:1px solid var(--border);padding:1.1rem 1.3rem;
-  background:var(--card);position:relative;overflow:hidden;
-  transition:transform .25s,border-color .25s;
+.about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start; }
+.about-text p {
+  color: var(--text2);
+  line-height: 1.95;
+  margin-bottom: 1.1rem;
+  font-weight: 300;
+  font-size: 0.97rem;
 }
-.info-card::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:var(--gold);transform:scaleY(0);transform-origin:bottom;
-  transition:transform .35s;
+.info-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.info-item {
+  border: 1px solid var(--border2);
+  background: var(--card);
+  padding: 1rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
 }
-.info-card:hover{transform:translateX(5px);border-color:rgba(212,168,83,.45)}
-.info-card:hover::before{transform:scaleY(1)}
-.info-card h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:4px}
-.info-card p{font-size:.88rem;color:var(--text2);font-weight:300}
+.info-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s;
+}
+.info-item:hover { transform: translateX(4px); border-color: var(--border); }
+.info-item:hover::before { transform: scaleY(1); }
+.info-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.info-value { font-size: 0.86rem; color: var(--text2); font-weight: 300; }
 
 /* ── TIMELINE ── */
-.timeline{position:relative;padding-left:2.8rem}
-.timeline-track{
-  position:absolute;left:0;top:10px;bottom:10px;width:1px;
-  background:var(--border);transform-origin:top;
-  transform:scaleY(0);transition:transform 1.8s cubic-bezier(.4,0,.2,1);
+.timeline { position: relative; padding-left: 2.5rem; }
+.tl-spine {
+  position: absolute;
+  left: 4px; top: 12px; bottom: 12px;
+  width: 1px;
+  background: var(--border);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 2s cubic-bezier(0.4,0,0.2,1);
 }
-.timeline-track.drawn{transform:scaleY(1)}
-.tl-item{position:relative;margin-bottom:3rem}
-.tl-dot{
-  position:absolute;left:-3.1rem;top:8px;
-  width:11px;height:11px;border-radius:50%;
-  background:var(--bg);border:2px solid var(--gold);
-  transition:background .25s,box-shadow .25s;
+.tl-spine.drawn { transform: scaleY(1); }
+
+.tl-item { position: relative; margin-bottom: 2.8rem; }
+.tl-dot {
+  position: absolute;
+  left: -2.75rem;
+  top: 10px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--gold);
+  transition: background 0.2s, box-shadow 0.2s;
 }
-.tl-item:hover .tl-dot{background:var(--gold);box-shadow:0 0 10px var(--gold)}
-.tl-date{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:5px}
-.tl-role{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;color:var(--text);margin-bottom:2px}
-.tl-org{font-size:.88rem;color:var(--muted);margin-bottom:.9rem;font-weight:300}
-.tl-list{list-style:none}
-.tl-list li{font-size:.88rem;color:var(--text2);padding:4px 0 4px 16px;position:relative;line-height:1.7;font-weight:300}
-.tl-list li::before{content:'›';position:absolute;left:0;color:var(--gold)}
+.tl-item:hover .tl-dot { background: var(--gold); box-shadow: 0 0 12px rgba(200,169,110,0.5); }
+
+.tl-date {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.tl-role {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.tl-org { font-size: 0.84rem; color: var(--muted); margin-bottom: 0.75rem; font-weight: 300; }
+.tl-points { list-style: none; }
+.tl-points li {
+  font-size: 0.85rem;
+  color: var(--text2);
+  padding: 3px 0 3px 14px;
+  position: relative;
+  line-height: 1.75;
+  font-weight: 300;
+}
+.tl-points li::before { content: '›'; position: absolute; left: 0; color: var(--gold); }
 
 /* ── SKILLS ── */
-.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
-.skill-bars{display:flex;flex-direction:column;gap:1.1rem}
-.sb-item{}
-.sb-top{display:flex;justify-content:space-between;margin-bottom:5px}
-.sb-name{font-size:.86rem;color:var(--text)}
-.sb-pct{font-size:.78rem;color:var(--gold);font-weight:500}
-.sb-track{height:5px;background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden}
-.sb-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;width:0;transition:width 1.3s cubic-bezier(.4,0,.2,1)}
-.radar-wrap{display:flex;justify-content:center}
+.skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.skill-list { display: flex; flex-direction: column; gap: 1rem; }
+.skill-item {}
+.skill-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.skill-name { font-size: 0.85rem; color: var(--text); }
+.skill-pct { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold); }
+.skill-track { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+.skill-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; width: 0; transition: width 1.3s cubic-bezier(0.4,0,0.2,1); }
 
-/* ── TOOLS ── */
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem}
-.tool-card{
-  border:1px solid var(--border);padding:1.4rem 1rem;
-  text-align:center;background:var(--card);
-  transition:border-color .25s,transform .25s;
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.8rem; }
+.tool-card {
+  border: 1px solid var(--border2);
+  padding: 1.2rem 0.8rem;
+  text-align: center;
+  background: var(--card);
+  transition: border-color 0.25s, transform 0.25s;
 }
-.tool-card:hover{border-color:var(--gold);transform:translateY(-3px)}
-.tool-icon{font-size:1.9rem;margin-bottom:.5rem;display:block}
-.tool-name{font-size:.78rem;color:var(--text2)}
+.tool-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.tool-icon { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
+.tool-name { font-size: 0.72rem; color: var(--text2); font-family: var(--font-mono); }
 
 /* ── ACHIEVEMENTS ── */
-.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.3rem}
-.ach-card{
-  background:var(--gold3);border:1px solid var(--border);
-  padding:2.2rem 1.8rem;position:relative;overflow:hidden;
-  transition:transform .25s,border-color .25s;
+.ach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.ach-card {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  padding: 2rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s;
 }
-.ach-card:hover{transform:translateY(-5px);border-color:rgba(212,168,83,.45)}
-.ach-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .45s}
-.ach-card:hover::before{transform:scaleX(1)}
-.ach-n{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:700;color:rgba(212,168,83,.1);position:absolute;top:.8rem;right:1.2rem;line-height:1}
-.ach-icon{font-size:1.4rem;margin-bottom:.8rem;display:block}
-.ach-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--gold2);margin-bottom:.5rem}
-.ach-desc{font-size:.86rem;color:var(--text2);line-height:1.8;font-weight:300}
-
-/* ── TESTIMONIALS ── */
-.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.3rem}
-.testi-card{
-  border:1px solid var(--border);padding:1.8rem;
-  background:var(--card);transition:transform .25s,border-color .25s;
+.ach-card:hover { transform: translateY(-4px); border-color: var(--border); }
+.ach-n {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(200,169,110,0.06);
+  position: absolute;
+  top: 0.5rem; right: 1rem;
+  line-height: 1;
+  pointer-events: none;
 }
-.testi-card:hover{transform:translateY(-4px);border-color:rgba(212,168,83,.35)}
-.testi-q{font-size:2.8rem;color:var(--gold);line-height:1;margin-bottom:.8rem;font-family:'Cormorant Garamond',serif;opacity:.4}
-.testi-text{font-size:.87rem;color:var(--text2);line-height:1.8;font-weight:300;font-style:italic;margin-bottom:1.3rem}
-.testi-author{display:flex;align-items:center;gap:.8rem}
-.testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:600;color:var(--gold2);flex-shrink:0}
-.testi-name{font-size:.86rem;font-weight:500;color:var(--text)}
-.testi-role{font-size:.75rem;color:var(--muted)}
+.ach-icon { font-size: 1.3rem; margin-bottom: 0.7rem; display: block; }
+.ach-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold2);
+  margin-bottom: 0.4rem;
+}
+.ach-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.8; font-weight: 300; }
 
 /* ── BLOG ── */
-.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.3rem}
-.blog-card{border:1px solid var(--border);background:var(--card);transition:transform .25s,border-color .25s}
-.blog-card:hover{transform:translateY(-4px);border-color:rgba(212,168,83,.35)}
-.blog-tag-bar{padding:.7rem 1.3rem;border-bottom:1px solid var(--border)}
-.blog-tag{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);background:var(--gold3);padding:3px 9px}
-.blog-body{padding:1.3rem}
-.blog-date{font-size:.73rem;color:var(--muted);margin-bottom:.5rem}
-.blog-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--text);margin-bottom:.5rem;line-height:1.3}
-.blog-excerpt{font-size:.83rem;color:var(--text2);line-height:1.7;font-weight:300}
-.blog-read{display:inline-flex;align-items:center;gap:5px;margin-top:.9rem;font-size:.76rem;color:var(--gold);font-weight:500;transition:gap .25s}
-.blog-card:hover .blog-read{gap:9px}
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.post-card {
+  border: 1px solid var(--border2);
+  background: var(--card);
+  padding: 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+  text-decoration: none;
+  display: block;
+}
+.post-card:hover { transform: translateY(-4px); border-color: var(--border); }
+.post-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+}
+.post-card:hover::after { transform: scaleX(1); }
+.post-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--gold);
+  background: var(--gold3);
+  padding: 2px 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.post-date {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.post-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+.post-excerpt { font-size: 0.82rem; color: var(--text2); line-height: 1.75; font-weight: 300; }
+.post-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 0.9rem;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 500;
+  font-family: var(--font-mono);
+  transition: gap 0.2s;
+}
+.post-card:hover .post-read { gap: 8px; }
 
-/* ── CONTACT ── */
-.contact-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:3.5rem;align-items:start}
-.contact-items{display:flex;flex-direction:column;gap:.9rem}
-.contact-item{
-  display:flex;align-items:center;gap:.9rem;
-  padding:.9rem 1rem;border:1px solid var(--border);
-  background:var(--card);transition:border-color .25s;
+/* ── TESTIMONIALS ── */
+.testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+.testi-card {
+  border: 1px solid var(--border2);
+  padding: 1.6rem;
+  background: var(--card);
+  transition: transform 0.25s, border-color 0.25s;
 }
-.contact-item:hover{border-color:var(--gold)}
-.ci-icon{width:34px;height:34px;border-radius:50%;background:var(--gold3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ci-icon svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.8}
-.ci-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px}
-.ci-value{font-size:.86rem;color:var(--text)}
-.contact-form{display:flex;flex-direction:column;gap:.9rem}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:500}
-.fg input,.fg textarea{
-  background:var(--card);border:1px solid var(--border);
-  color:var(--text);padding:.75rem .9rem;
-  font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:300;
-  outline:none;transition:border-color .25s;resize:none;border-radius:2px;
+.testi-card:hover { transform: translateY(-3px); border-color: var(--border); }
+.testi-q {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--gold);
+  opacity: 0.3;
+  line-height: 1;
+  margin-bottom: 0.7rem;
 }
-.fg input:focus,.fg textarea:focus{border-color:var(--gold)}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
-.form-ok{color:#5cd65c;font-size:.86rem;padding:.5rem 0;display:none;align-items:center;gap:7px}
-.form-ok.show{display:flex}
+.testi-text { font-size: 0.84rem; color: var(--text2); line-height: 1.85; font-style: italic; font-weight: 300; margin-bottom: 1.2rem; }
+.testi-author { display: flex; align-items: center; gap: 0.7rem; }
+.testi-av {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--gold3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold2);
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+.testi-name { font-size: 0.84rem; font-weight: 500; color: var(--text); }
+.testi-role { font-size: 0.72rem; color: var(--muted); font-family: var(--font-mono); }
 
 /* ── EDUCATION ── */
-.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
-.edu-card{
-  border:1px solid var(--border);padding:1.8rem;
-  background:var(--card);position:relative;overflow:hidden;
-  transition:transform .25s,border-color .25s;
+.edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.edu-card {
+  border: 1px solid var(--border2);
+  padding: 1.6rem;
+  background: var(--card);
+  transition: border-color 0.25s, transform 0.25s;
+  position: relative;
+  overflow: hidden;
 }
-.edu-card:hover{transform:translateY(-3px);border-color:rgba(212,168,83,.4)}
-.edu-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .35s}
-.edu-card:hover::after{transform:scaleX(1)}
-.edu-badge{display:inline-block;background:var(--gold3);border:1px solid var(--border);color:var(--gold2);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;margin-bottom:1rem}
-.edu-degree{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:5px}
-.edu-inst{font-size:.87rem;color:var(--muted);font-weight:300}
+.edu-card:hover { transform: translateY(-3px); border-color: var(--border); }
+.edu-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform 0.35s;
+}
+.edu-card:hover::before { transform: scaleX(1); }
+.edu-badge {
+  display: inline-block;
+  background: var(--gold3);
+  border: 1px solid var(--border);
+  color: var(--gold2);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  margin-bottom: 0.9rem;
+}
+.edu-degree { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.edu-inst { font-size: 0.84rem; color: var(--muted); font-weight: 300; }
+
+/* ── CONTACT ── */
+.contact-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
+.contact-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border2);
+  background: var(--card);
+  transition: border-color 0.25s;
+}
+.contact-row:hover { border-color: var(--gold); }
+.contact-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--gold3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-icon svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; }
+.contact-lbl { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 2px; }
+.contact-val { font-size: 0.84rem; color: var(--text); }
+
+.form { display: flex; flex-direction: column; gap: 0.85rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.fg input, .fg textarea {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 0.72rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.25s;
+  resize: none;
+  border-radius: 0;
+}
+.fg input:focus, .fg textarea:focus { border-color: var(--gold); }
+.fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+
+.form-success {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-size: 0.84rem;
+  font-family: var(--font-mono);
+  padding: 0.5rem 0;
+}
+.form-success.show { display: flex; }
 
 /* ── FOOTER ── */
-footer{
-  background:var(--bg);border-top:1px solid var(--border);
-  padding:2rem 6rem;
-  display:flex;align-items:center;justify-content:space-between;
+footer {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  border-top: 1px solid var(--border2);
+  padding: 1.8rem 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold2);font-style:italic}
-.footer-info{font-size:.78rem;color:var(--muted)}
-.footer-info a{color:var(--gold);text-decoration:none}
+.footer-brand { font-family: var(--font-display); font-style: italic; color: var(--gold2); font-size: 1rem; }
+.footer-info { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.footer-info a { color: var(--gold); text-decoration: none; }
 
-/* ── ANIMATIONS (purely additive — content visible without them) ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.anim-hero>*{animation:fadeUp .8s both}
-.anim-hero>*:nth-child(1){animation-delay:.2s}
-.anim-hero>*:nth-child(2){animation-delay:.4s}
-.anim-hero>*:nth-child(3){animation-delay:.55s}
-.anim-hero>*:nth-child(4){animation-delay:.7s}
-.anim-hero>*:nth-child(5){animation-delay:.82s}
-.anim-hero>*:nth-child(6){animation-delay:.94s}
-
-/* Scroll reveal — elements are VISIBLE by default, js adds class for fancy entry */
-.sr{transition:opacity .65s,transform .65s}
-.sr.hidden{opacity:0;transform:translateY(22px)}
-.sr.hidden.visible{opacity:1;transform:translateY(0)}
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ── RESPONSIVE ── */
-@media(max-width:860px){
-  nav{padding:.9rem 1.5rem}.nav-links{display:none}
-  .hero{padding:6rem 1.5rem 3.5rem}
-  .hero-layout{grid-template-columns:1fr}.hero-photo{display:none}
-  .scroll-hint{display:none}
-  .stats-bar{grid-template-columns:1fr 1fr}
-  .stat-cell:nth-child(2n){border-right:none}
-  .visitor-strip{padding:1rem 1.5rem;flex-direction:column;gap:.4rem;text-align:center}
-  .section{padding:3.5rem 1.5rem}
-  .about-grid,.skills-layout,.contact-layout{grid-template-columns:1fr;gap:2rem}
-  .ach-grid,.edu-grid{grid-template-columns:1fr}
-  .dash-metrics{grid-template-columns:1fr 1fr}
-  .dash-bars{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  footer{flex-direction:column;gap:.8rem;text-align:center;padding:1.8rem 1.5rem}
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: calc(var(--nav-h) + 4rem) 1.5rem 4rem; }
+  .hero-avatar { display: none; }
+  .scroll-hint { display: none; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(2n) { border-right: none; }
+  .section { padding: 3.5rem 1.5rem; }
+  .about-grid, .skills-layout, .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .ach-grid, .edu-grid { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+  .bar-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 0.6rem; text-align: center; padding: 1.5rem; }
+  .live-strip { padding: 0.75rem 1.5rem; flex-direction: column; gap: 0.3rem; text-align: center; }
 }
 </style>
 </head>
 <body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- BACKGROUND -->
+<canvas id="bgCanvas"></canvas>
 
 <!-- NAV -->
 <nav id="nav">
@@ -431,151 +1041,156 @@ footer{
       <li><a href="#dashboard">Dashboard</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#tools">Tools</a></li>
       <li><a href="#blog">Blog</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="themeToggle" title="Toggle theme"></button>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme"></button>
   </div>
 </nav>
 
 <!-- OTW BADGE -->
-<div class="otw-badge"><div class="otw-dot"></div>Open to Work</div>
+<div class="otw"><div class="otw-dot"></div>Open to Work</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg-circle"></div>
-  <div class="hero-layout">
-    <div class="anim-hero">
-      <div class="hero-eyebrow">
-        <div class="eyebrow-line"></div>
-        <span class="eyebrow-text">Operations &amp; QA Leader · Delhi, India</span>
+  <div class="hero-inner">
+    <div class="hero-tag">Operations &amp; QA Leader · Delhi, India</div>
+    <h1>
+      <span class="h1-line1">Kapil</span>
+      <span class="h1-line2">Singh</span>
+    </h1>
+    <div class="hero-typing">
+      <span class="typing-prompt">$&gt;&nbsp;</span>
+      <span class="typing-word" id="typingEl"></span>
+      <span class="typing-cursor"></span>
+    </div>
+    <p class="hero-desc">4+ years driving quality excellence across AI-powered products. Building high-performing QA teams, improving processes, and delivering results that matter.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        +91 70117 14253
       </div>
-      <h1>
-        <span class="name-first">Kapil</span>
-        <span class="name-last">Singh</span>
-      </h1>
-      <div class="typing-wrap">
-        <span class="typing-prefix">I am a&nbsp;</span>
-        <span class="typing-word" id="typingEl"></span>
-        <span class="typing-cur"></span>
+      <div class="hero-meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b4dfd5c4ddd8c7dddad3dc84818184f4d3d9d5ddd89ad7dbd9">[email&#160;protected]</a>
       </div>
-      <p class="hero-sub">4+ years driving quality excellence across AI-powered products. Building high-performing QA teams, improving processes, and delivering results that matter.</p>
-      <div class="hero-contacts">
-        <a href="tel:+917011714253">
-          <svg class="ci" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          +91 70117 14253
-        </a>
-        <a href="mailto:kapilsingh0550@gmail.com">
-          <svg class="ci" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          kapilsingh0550@gmail.com
-        </a>
-        <a href="#">
-          <svg class="ci" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Delhi, India
-        </a>
-      </div>
-      <div class="hero-btns">
-        <a href="mailto:kapilsingh0550@gmail.com" class="btn btn-gold"><span>Get in Touch</span></a>
-        <a href="#" id="dlCV" class="btn btn-ghost"><span>⬇ Download CV</span></a>
-      </div>
-      <div class="social-links">
-        <a href="https://linkedin.com/in/kapilsingh" target="_blank" class="social-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-          LinkedIn
-        </a>
-        <a href="https://github.com/kapilsingh" target="_blank" class="social-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-          GitHub
-        </a>
+      <div class="hero-meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Delhi, India
       </div>
     </div>
-    <div class="hero-photo">
-      <div class="hero-photo-init">KS</div>
+    <div class="hero-actions">
+      <a href="/cdn-cgi/l/email-protection#177c76677e7b647e79707f2722222757707a767e7b3974787a" class="btn btn-primary">Get in Touch</a>
+      <a href="#" id="dlCV" class="btn btn-outline">⬇ Download CV</a>
+    </div>
+    <div class="social-row">
+      <a href="https://linkedin.com/in/kapilsingh" target="_blank" class="social-pill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/kapilsingh" target="_blank" class="social-pill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        GitHub
+      </a>
     </div>
   </div>
-  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+  <div class="hero-avatar">
+    <div class="avatar-wrap">
+      <div class="orbit orbit-1"></div>
+      <div class="orbit orbit-2"></div>
+      <div class="orbit orbit-3"></div>
+      <div class="avatar-inner">KS</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
 </section>
 
 <!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-cell"><span class="stat-num" data-count="4" data-suffix="+">4+</span><span class="stat-lbl">Years Experience</span></div>
-  <div class="stat-cell"><span class="stat-num" data-count="3" data-suffix="+">3+</span><span class="stat-lbl">Companies</span></div>
-  <div class="stat-cell"><span class="stat-num">1 yr</span><span class="stat-lbl">To Lead Promotion</span></div>
-  <div class="stat-cell"><span class="stat-num">2023</span><span class="stat-lbl">Best Team Leader</span></div>
+<div class="stats">
+  <div class="stat"><span class="stat-n" data-count="4" data-suffix="+">4+</span><span class="stat-l">Years Experience</span></div>
+  <div class="stat"><span class="stat-n" data-count="3" data-suffix="+">3+</span><span class="stat-l">Companies</span></div>
+  <div class="stat"><span class="stat-n">1 yr</span><span class="stat-l">To Lead Promotion</span></div>
+  <div class="stat"><span class="stat-n">2023</span><span class="stat-l">Best Team Leader</span></div>
 </div>
 
-<!-- VISITOR -->
-<div class="visitor-strip">
-  <div class="visitor-left"><div class="vlive"></div>Portfolio Visitors &nbsp;<span class="visitor-count" id="vc">1,284</span></div>
-  <div class="visitor-right">Live counter</div>
+<!-- LIVE STRIP -->
+<div class="live-strip">
+  <div class="live-left"><div class="otw-dot"></div>Portfolio Visitors &nbsp;<span class="live-count" id="vc">1,284</span></div>
+  <div class="live-right">// live counter</div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="section alt" id="dashboard">
-  <div class="sec-label">Live Metrics</div>
+  <div class="sec-eyebrow">Live Metrics</div>
   <h2 class="sec-title">QA <em>Dashboard</em></h2>
-  <div class="dash-box sr">
-    <div class="dash-top">
-      <span class="dash-heading">Operations Overview — Kapil Singh</span>
-      <span class="dash-live"><span class="vlive"></span>Live · Updated Today</span>
+  <div class="dash reveal">
+    <div class="dash-header">
+      <span class="dash-title">kapilsingh / operations-overview.md</span>
+      <span class="dash-status"><div class="otw-dot"></div>live · updated today</span>
     </div>
-    <div class="dash-metrics">
-      <div class="dash-metric"><span class="dm-num" data-count="1200">1200</span><span class="dm-lbl">Test Cases Written</span></div>
-      <div class="dash-metric"><span class="dm-num" data-count="340">340</span><span class="dm-lbl">Bugs Reported</span></div>
-      <div class="dash-metric"><span class="dm-num" data-count="98" data-suffix="%">98%</span><span class="dm-lbl">Defect Detection</span></div>
-      <div class="dash-metric"><span class="dm-num" data-count="8">8</span><span class="dm-lbl">Team Members Led</span></div>
-    </div>
-    <div class="dash-bars">
-      <div>
-        <div class="bar-row"><div class="bar-top"><span>QA Process Efficiency</span><span class="bar-pct">92%</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span>Team Performance</span><span class="bar-pct">88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span>Product Quality Index</span><span class="bar-pct">95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+    <div class="dash-body">
+      <div class="metrics">
+        <div class="metric"><span class="metric-n" data-count="1200">1200</span><span class="metric-l">Test Cases Written</span></div>
+        <div class="metric"><span class="metric-n" data-count="340">340</span><span class="metric-l">Bugs Reported</span></div>
+        <div class="metric"><span class="metric-n" data-count="98" data-suffix="%">98%</span><span class="metric-l">Defect Detection</span></div>
+        <div class="metric"><span class="metric-n" data-count="8">8</span><span class="metric-l">Team Members Led</span></div>
       </div>
-      <div>
-        <div class="bar-row"><div class="bar-top"><span>Client Satisfaction</span><span class="bar-pct">97%</span></div><div class="bar-track"><div class="bar-fill" data-w="97"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span>Sprint Completion</span><span class="bar-pct">90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span>Documentation Coverage</span><span class="bar-pct">85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+      <div class="bar-grid">
+        <div>
+          <div class="bar-section-title">// Quality Metrics</div>
+          <div class="bar-item"><div class="bar-meta"><span>QA Process Efficiency</span><span class="bar-pct">92%</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
+          <div class="bar-item"><div class="bar-meta"><span>Team Performance</span><span class="bar-pct">88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="bar-item"><div class="bar-meta"><span>Product Quality Index</span><span class="bar-pct">95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+        </div>
+        <div>
+          <div class="bar-section-title">// Delivery Metrics</div>
+          <div class="bar-item"><div class="bar-meta"><span>Client Satisfaction</span><span class="bar-pct">97%</span></div><div class="bar-track"><div class="bar-fill" data-w="97"></div></div></div>
+          <div class="bar-item"><div class="bar-meta"><span>Sprint Completion</span><span class="bar-pct">90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="bar-item"><div class="bar-meta"><span>Documentation Coverage</span><span class="bar-pct">85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+        </div>
       </div>
-    </div>
-    <div class="cw-strip">
-      <div class="cw-dot"></div>
-      <div class="cw-text">Currently working on <strong>AI Video QA Automation</strong> at Tavus.io — improving test coverage for AI-generated video personalisation workflows.</div>
+      <div class="current-work">
+        <div class="otw-dot"></div>
+        Currently working on <strong>AI Video QA Automation</strong> at Tavus.io — improving test coverage for AI-generated video personalisation workflows.
+      </div>
     </div>
   </div>
 </div>
 
 <!-- ABOUT -->
 <div class="section" id="about">
-  <div class="sec-label">About Me</div>
+  <div class="sec-eyebrow">About Me</div>
   <h2 class="sec-title">Shaping Teams, <em>Elevating Quality</em></h2>
   <div class="about-grid">
-    <div class="about-body sr">
+    <div class="about-text reveal">
       <p>Results-driven Operations Team Lead with over 4 years of experience in Quality Assurance, Product Operations, and Customer Support across Simublade Technologies (Tavus.io), Wipro, and HGS.</p>
       <p>My expertise lies in building and managing QA teams, improving product quality end-to-end, and ensuring operational excellence. I thrive at the intersection of people, process, and product.</p>
       <p>With a strong background in automation testing fundamentals, technical documentation, and client communication — I bring both technical rigour and leadership depth to every challenge.</p>
     </div>
-    <div class="info-cards">
-      <div class="info-card sr"><h4>Current Role</h4><p>Team Lead – Operations at Tavus.io (Simublade Technologies)</p></div>
-      <div class="info-card sr"><h4>Core Expertise</h4><p>QA Management, Team Leadership, Process Improvement, Product Operations</p></div>
-      <div class="info-card sr"><h4>Specialisation</h4><p>AI Quality Assurance — leading a dedicated team of AI QA professionals</p></div>
-      <div class="info-card sr"><h4>Open To</h4><p>Remote, hybrid, and on-site roles in operations and QA leadership</p></div>
+    <div class="info-list">
+      <div class="info-item reveal"><div class="info-label">Current Role</div><div class="info-value">Team Lead – Operations at Tavus.io (Simublade Technologies)</div></div>
+      <div class="info-item reveal"><div class="info-label">Core Expertise</div><div class="info-value">QA Management, Team Leadership, Process Improvement, Product Operations</div></div>
+      <div class="info-item reveal"><div class="info-label">Specialisation</div><div class="info-value">AI Quality Assurance — leading a dedicated team of AI QA professionals</div></div>
+      <div class="info-item reveal"><div class="info-label">Open To</div><div class="info-value">Remote, hybrid, and on-site roles in operations and QA leadership</div></div>
     </div>
   </div>
 </div>
 
 <!-- EXPERIENCE -->
 <div class="section alt" id="experience">
-  <div class="sec-label">Career</div>
+  <div class="sec-eyebrow">Career</div>
   <h2 class="sec-title">Work <em>Experience</em></h2>
   <div class="timeline">
-    <div class="timeline-track" id="tlTrack"></div>
-    <div class="tl-item sr">
+    <div class="tl-spine" id="tlSpine"></div>
+    <div class="tl-item reveal">
       <div class="tl-dot"></div>
       <div class="tl-date">April 2022 – Present</div>
       <div class="tl-role">Team Lead – Operations</div>
       <div class="tl-org">Tavus.io · Simublade Technologies Pvt. Ltd.</div>
-      <ul class="tl-list">
+      <ul class="tl-points">
         <li>Lead and manage a Quality Assurance team ensuring high product quality and performance.</li>
         <li>Monitor team performance, identify errors, and implement corrective actions using relevant tools.</li>
         <li>Develop and maintain QA processes, test plans, and quality standards.</li>
@@ -583,24 +1198,24 @@ footer{
         <li>Conduct performance reviews, training sessions, and mentoring for team members.</li>
       </ul>
     </div>
-    <div class="tl-item sr">
+    <div class="tl-item reveal">
       <div class="tl-dot"></div>
       <div class="tl-date">September 2020 – March 2022</div>
       <div class="tl-role">Product Associate</div>
       <div class="tl-org">Wipro</div>
-      <ul class="tl-list">
+      <ul class="tl-points">
         <li>Managed customer handling of products listed on Amazon platforms.</li>
         <li>Ensured accurate product information and compliance with quality standards.</li>
         <li>Communicated with clients and customers via email and calls to resolve product queries.</li>
         <li>Maintained detailed reports and ensured data accuracy at scale.</li>
       </ul>
     </div>
-    <div class="tl-item sr">
+    <div class="tl-item reveal">
       <div class="tl-dot"></div>
       <div class="tl-date">November 2019 – March 2020</div>
       <div class="tl-role">Product Associate</div>
       <div class="tl-org">HGS – Hinduja Global Solutions</div>
-      <ul class="tl-list">
+      <ul class="tl-points">
         <li>Provided customer support for Axis Bank via chat communication.</li>
         <li>Resolved customer queries efficiently while maintaining service quality standards.</li>
         <li>Ensured customer satisfaction through prompt and accurate issue resolution.</li>
@@ -611,284 +1226,322 @@ footer{
 
 <!-- SKILLS -->
 <div class="section" id="skills">
-  <div class="sec-label">Capabilities</div>
+  <div class="sec-eyebrow">Capabilities</div>
   <h2 class="sec-title">Skills &amp; <em>Expertise</em></h2>
   <div class="skills-layout">
-    <div class="skill-bars sr" id="skillBars">
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">QA Management</span><span class="sb-pct">95%</span></div><div class="sb-track"><div class="sb-fill" data-w="95"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Team Leadership</span><span class="sb-pct">90%</span></div><div class="sb-track"><div class="sb-fill" data-w="90"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Test Planning &amp; Execution</span><span class="sb-pct">92%</span></div><div class="sb-track"><div class="sb-fill" data-w="92"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Process Improvement</span><span class="sb-pct">88%</span></div><div class="sb-track"><div class="sb-fill" data-w="88"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Client Communication</span><span class="sb-pct">87%</span></div><div class="sb-track"><div class="sb-fill" data-w="87"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Technical Documentation</span><span class="sb-pct">85%</span></div><div class="sb-track"><div class="sb-fill" data-w="85"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Automation Testing</span><span class="sb-pct">70%</span></div><div class="sb-track"><div class="sb-fill" data-w="70"></div></div></div>
-      <div class="sb-item"><div class="sb-top"><span class="sb-name">Python / SQL / Java</span><span class="sb-pct">55%</span></div><div class="sb-track"><div class="sb-fill" data-w="55"></div></div></div>
+    <div class="skill-list reveal" id="skillList">
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">QA Management</span><span class="skill-pct">95%</span></div><div class="skill-track"><div class="skill-fill" data-w="95"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Team Leadership</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Test Planning &amp; Execution</span><span class="skill-pct">92%</span></div><div class="skill-track"><div class="skill-fill" data-w="92"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Process Improvement</span><span class="skill-pct">88%</span></div><div class="skill-track"><div class="skill-fill" data-w="88"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Client Communication</span><span class="skill-pct">87%</span></div><div class="skill-track"><div class="skill-fill" data-w="87"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Technical Documentation</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Automation Testing</span><span class="skill-pct">70%</span></div><div class="skill-track"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><div class="skill-top"><span class="skill-name">Python / SQL / Java</span><span class="skill-pct">55%</span></div><div class="skill-track"><div class="skill-fill" data-w="55"></div></div></div>
     </div>
-    <div class="radar-wrap sr">
-      <canvas id="radarChart" width="320" height="320"></canvas>
+    <div>
+      <div class="sec-eyebrow" style="margin-bottom:1rem">Tools I Use</div>
+      <div class="tools-grid reveal">
+        <div class="tool-card"><span class="tool-icon">🎬</span><div class="tool-name">Tavus</div></div>
+        <div class="tool-card"><span class="tool-icon">📹</span><div class="tool-name">Descript</div></div>
+        <div class="tool-card"><span class="tool-icon">🔍</span><div class="tool-name">LogRocket</div></div>
+        <div class="tool-card"><span class="tool-icon">🐞</span><div class="tool-name">Jira</div></div>
+        <div class="tool-card"><span class="tool-icon">📋</span><div class="tool-name">Notion</div></div>
+        <div class="tool-card"><span class="tool-icon">💬</span><div class="tool-name">Slack</div></div>
+        <div class="tool-card"><span class="tool-icon">🐍</span><div class="tool-name">Python</div></div>
+        <div class="tool-card"><span class="tool-icon">🗄️</span><div class="tool-name">SQL</div></div>
+      </div>
     </div>
-  </div>
-</div>
-
-<!-- TOOLS -->
-<div class="section alt" id="tools">
-  <div class="sec-label">Stack</div>
-  <h2 class="sec-title">Tools <em>I Use</em></h2>
-  <div class="tools-grid">
-    <div class="tool-card sr"><span class="tool-icon">🎬</span><div class="tool-name">Tavus Platform</div></div>
-    <div class="tool-card sr"><span class="tool-icon">📹</span><div class="tool-name">Descript</div></div>
-    <div class="tool-card sr"><span class="tool-icon">🔍</span><div class="tool-name">LogRocket</div></div>
-    <div class="tool-card sr"><span class="tool-icon">🐞</span><div class="tool-name">Jira</div></div>
-    <div class="tool-card sr"><span class="tool-icon">📋</span><div class="tool-name">Notion</div></div>
-    <div class="tool-card sr"><span class="tool-icon">💬</span><div class="tool-name">Slack</div></div>
-    <div class="tool-card sr"><span class="tool-icon">🐍</span><div class="tool-name">Python</div></div>
-    <div class="tool-card sr"><span class="tool-icon">🗄️</span><div class="tool-name">SQL</div></div>
   </div>
 </div>
 
 <!-- ACHIEVEMENTS -->
-<div class="section" id="achievements">
-  <div class="sec-label">Recognition</div>
+<div class="section alt" id="achievements">
+  <div class="sec-eyebrow">Recognition</div>
   <h2 class="sec-title">Key <em>Achievements</em></h2>
   <div class="ach-grid">
-    <div class="ach-card sr"><span class="ach-n">01</span><span class="ach-icon">★</span><div class="ach-title">Best Team Leader – 2023</div><p class="ach-desc">Awarded Best Team Leader of the Year at Simublade Technologies for outstanding leadership, team performance, and product quality delivery.</p></div>
-    <div class="ach-card sr"><span class="ach-n">02</span><span class="ach-icon">⚡</span><div class="ach-title">Promoted Within One Year</div><p class="ach-desc">Fast-tracked from individual contributor to Team Lead in under a year, based on demonstrated performance, initiative, and leadership.</p></div>
-    <div class="ach-card sr"><span class="ach-n">03</span><span class="ach-icon">◈</span><div class="ach-title">AI QA Team Management</div><p class="ach-desc">Successfully built, managed, and mentored a specialised team of AI QA professionals at Tavus.io, an AI video personalisation platform.</p></div>
-    <div class="ach-card sr"><span class="ach-n">04</span><span class="ach-icon">◉</span><div class="ach-title">CCNA Industrial Training</div><p class="ach-desc">Completed 6-week CCNA Industrial Training in Routing and Switching, building a strong technical foundation alongside operational expertise.</p></div>
+    <div class="ach-card reveal"><span class="ach-n">01</span><span class="ach-icon">★</span><div class="ach-title">Best Team Leader – 2023</div><p class="ach-desc">Awarded Best Team Leader of the Year at Simublade Technologies for outstanding leadership, team performance, and product quality delivery.</p></div>
+    <div class="ach-card reveal"><span class="ach-n">02</span><span class="ach-icon">⚡</span><div class="ach-title">Promoted Within One Year</div><p class="ach-desc">Fast-tracked from individual contributor to Team Lead in under a year, based on demonstrated performance, initiative, and leadership.</p></div>
+    <div class="ach-card reveal"><span class="ach-n">03</span><span class="ach-icon">◈</span><div class="ach-title">AI QA Team Management</div><p class="ach-desc">Successfully built, managed, and mentored a specialised team of AI QA professionals at Tavus.io, an AI video personalisation platform.</p></div>
+    <div class="ach-card reveal"><span class="ach-n">04</span><span class="ach-icon">◉</span><div class="ach-title">CCNA Industrial Training</div><p class="ach-desc">Completed 6-week CCNA Industrial Training in Routing and Switching, building a strong technical foundation alongside operational expertise.</p></div>
   </div>
 </div>
 
 <!-- TESTIMONIALS -->
-<div class="section alt" id="testimonials">
-  <div class="sec-label">Testimonials</div>
+<div class="section" id="testimonials">
+  <div class="sec-eyebrow">Testimonials</div>
   <h2 class="sec-title">What People <em>Say</em></h2>
   <div class="testi-grid">
-    <div class="testi-card sr">
-      <div class="testi-q">"</div>
-      <p class="testi-text">Kapil consistently goes above and beyond. His ability to manage the QA team while maintaining product quality under tight deadlines is truly impressive. A natural leader.</p>
-      <div class="testi-author"><div class="testi-avatar">RY</div><div><div class="testi-name">Rashmi Yadav</div><div class="testi-role">Product Manager, Tavus.io</div></div></div>
-    </div>
-    <div class="testi-card sr">
-      <div class="testi-q">"</div>
-      <p class="testi-text">Working with Kapil was a great experience. He brought structure, clarity, and energy to the QA process. His attention to detail and mentorship style made our whole team better.</p>
-      <div class="testi-author"><div class="testi-avatar">AR</div><div><div class="testi-name">Anmol Rajput</div><div class="testi-role">Subject Matter Expert, Simublade</div></div></div>
-    </div>
-    <div class="testi-card sr">
-      <div class="testi-q">"</div>
-      <p class="testi-text">Kapil has a rare combination of technical understanding and people skills. He built documentation systems that we still rely on today. Highly recommend him for any leadership role.</p>
-      <div class="testi-author"><div class="testi-avatar">AT</div><div><div class="testi-name">Abhishek Tripathi</div><div class="testi-role">Operational Manager</div></div></div>
-    </div>
-    <div class="testi-card sr">
-      <div class="testi-q">"</div>
-      <p class="testi-text">I've worked closely with him on multiple tasks, and I can confidently say that he consistently delivers high-quality results. He has a strong understanding of his work, pays attention to even the smallest details, and ensures that everything is completed to a high standard. His professionalism, dedication, and ability to handle challenges make him someone you can always rely on. He truly adds value to any project he is part of.</p>
-      <div class="testi-author"><div class="testi-avatar">HK</div><div><div class="testi-name">Himanshu Kala</div><div class="testi-role">AI QA Associate</div></div></div>
-    </div>
+    <div class="testi-card reveal"><div class="testi-q">"</div><p class="testi-text">Kapil consistently goes above and beyond. His ability to manage the QA team while maintaining product quality under tight deadlines is truly impressive. A natural leader.</p><div class="testi-author"><div class="testi-av">RY</div><div><div class="testi-name">Rashmi Yadav</div><div class="testi-role">Product Manager, Tavus.io</div></div></div></div>
+    <div class="testi-card reveal"><div class="testi-q">"</div><p class="testi-text">Working with Kapil was a great experience. He brought structure, clarity, and energy to the QA process. His attention to detail and mentorship style made our whole team better.</p><div class="testi-author"><div class="testi-av">AR</div><div><div class="testi-name">Anmol Rajput</div><div class="testi-role">Subject Matter Expert, Simublade</div></div></div></div>
+    <div class="testi-card reveal"><div class="testi-q">"</div><p class="testi-text">Kapil has a rare combination of technical understanding and people skills. He built documentation systems that we still rely on today. Highly recommend him for any leadership role.</p><div class="testi-author"><div class="testi-av">AT</div><div><div class="testi-name">Abhishek Tripathi</div><div class="testi-role">Operational Manager</div></div></div></div>
+    <div class="testi-card reveal"><div class="testi-q">"</div><p class="testi-text">He consistently delivers high-quality results. Strong understanding of his work, attention to the smallest details, and ensures everything is completed to a high standard. He truly adds value to any project.</p><div class="testi-author"><div class="testi-av">HK</div><div><div class="testi-name">Himanshu Kala</div><div class="testi-role">AI QA Associate</div></div></div></div>
   </div>
 </div>
 
 <!-- BLOG -->
-<div class="section" id="blog">
-  <div class="sec-label">Thoughts</div>
+<div class="section alt" id="blog">
+  <div class="sec-eyebrow">Thoughts</div>
   <h2 class="sec-title">Blog &amp; <em>Insights</em></h2>
   <div class="blog-grid">
-    <div class="blog-card sr">
-      <div class="blog-tag-bar"><span class="blog-tag">AI Quality</span></div>
-      <div class="blog-body">
-        <div class="blog-date">March 2025</div>
-        <div class="blog-title">How AI is Changing the Future of QA Testing</div>
-        <p class="blog-excerpt">AI-generated content introduces new challenges for quality assurance. Here's how I approach testing AI video outputs at Tavus.io and what every QA lead should know.</p>
-        <span class="blog-read">Read more →</span>
-      </div>
-    </div>
-    <div class="blog-card sr">
-      <div class="blog-tag-bar"><span class="blog-tag">Leadership</span></div>
-      <div class="blog-body">
-        <div class="blog-date">January 2025</div>
-        <div class="blog-title">5 Things I Learned in My First Year as Team Lead</div>
-        <p class="blog-excerpt">Getting promoted fast is exciting — but it comes with real challenges. Here are the five most important lessons I learned leading a QA team for the first time.</p>
-        <span class="blog-read">Read more →</span>
-      </div>
-    </div>
-    <div class="blog-card sr">
-      <div class="blog-tag-bar"><span class="blog-tag">Process</span></div>
-      <div class="blog-body">
-        <div class="blog-date">November 2024</div>
-        <div class="blog-title">Building a QA Process from Scratch — A Practical Guide</div>
-        <p class="blog-excerpt">When I joined Tavus.io, there was no formal QA process. This is the story of how I built one from zero, the mistakes I made, and what actually worked.</p>
-        <span class="blog-read">Read more →</span>
-      </div>
-    </div>
+    <a href="#" class="post-card reveal">
+      <span class="post-tag">AI Quality</span>
+      <div class="post-date">March 2025</div>
+      <div class="post-title">How AI is Changing the Future of QA Testing</div>
+      <p class="post-excerpt">AI-generated content introduces new challenges for quality assurance. Here's how I approach testing AI video outputs at Tavus.io and what every QA lead should know.</p>
+      <span class="post-read">read more →</span>
+    </a>
+    <a href="#" class="post-card reveal">
+      <span class="post-tag">Leadership</span>
+      <div class="post-date">January 2025</div>
+      <div class="post-title">5 Things I Learned in My First Year as Team Lead</div>
+      <p class="post-excerpt">Getting promoted fast is exciting — but it comes with real challenges. Here are the five most important lessons I learned leading a QA team for the first time.</p>
+      <span class="post-read">read more →</span>
+    </a>
+    <a href="#" class="post-card reveal">
+      <span class="post-tag">Process</span>
+      <div class="post-date">November 2024</div>
+      <div class="post-title">Building a QA Process from Scratch — A Practical Guide</div>
+      <p class="post-excerpt">When I joined Tavus.io, there was no formal QA process. This is the story of how I built one from zero, the mistakes I made, and what actually worked.</p>
+      <span class="post-read">read more →</span>
+    </a>
   </div>
 </div>
 
 <!-- EDUCATION -->
-<div class="section alt" id="education">
-  <div class="sec-label">Education</div>
+<div class="section" id="education">
+  <div class="sec-eyebrow">Education</div>
   <h2 class="sec-title">Academic <em>Background</em></h2>
   <div class="edu-grid">
-    <div class="edu-card sr"><span class="edu-badge">Pursuing</span><div class="edu-degree">Bachelor of Computer Applications (BCA)</div><div class="edu-inst">Indira Gandhi National Open University (IGNOU)</div></div>
-    <div class="edu-card sr"><span class="edu-badge">Completed 2019</span><div class="edu-degree">Diploma in Engineering</div><div class="edu-inst">Pusa Institute of Technology, Delhi</div></div>
+    <div class="edu-card reveal"><span class="edu-badge">Pursuing</span><div class="edu-degree">Bachelor of Computer Applications (BCA)</div><div class="edu-inst">Indira Gandhi National Open University (IGNOU)</div></div>
+    <div class="edu-card reveal"><span class="edu-badge">Completed 2019</span><div class="edu-degree">Diploma in Engineering</div><div class="edu-inst">Pusa Institute of Technology, Delhi</div></div>
   </div>
 </div>
 
 <!-- CONTACT -->
-<div class="section" id="contact">
-  <div class="sec-label">Contact</div>
+<div class="section alt" id="contact">
+  <div class="sec-eyebrow">Contact</div>
   <h2 class="sec-title">Get In <em>Touch</em></h2>
   <div class="contact-layout">
-    <div class="contact-items sr">
-      <div class="contact-item"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div class="ci-label">Phone</div><div class="ci-value">+91 70117 14253</div></div></div>
-      <div class="contact-item"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="ci-label">Email</div><div class="ci-value">kapilsingh0550@gmail.com</div></div></div>
-      <div class="contact-item"><div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="ci-label">Location</div><div class="ci-value">Delhi, India</div></div></div>
+    <div class="contact-list reveal">
+      <div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div class="contact-lbl">Phone</div><div class="contact-val">+91 70117 14253</div></div></div>
+      <div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="contact-lbl">Email</div><div class="contact-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0a616b7a63667963646d623a3f3f3a4a6d676b636624696567">[email&#160;protected]</a></div></div></div>
+      <div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="contact-lbl">Location</div><div class="contact-val">Delhi, India</div></div></div>
     </div>
-    <div class="contact-form sr">
+    <div class="form reveal">
       <div class="form-row">
         <div class="fg"><label>Your Name</label><input type="text" id="cName" placeholder="John Doe"></div>
         <div class="fg"><label>Your Email</label><input type="email" id="cEmail" placeholder="john@email.com"></div>
       </div>
       <div class="fg"><label>Subject</label><input type="text" id="cSubject" placeholder="Job opportunity / Collaboration"></div>
       <div class="fg"><label>Message</label><textarea id="cMsg" rows="5" placeholder="Tell me about the opportunity..."></textarea></div>
-      <div class="form-ok" id="formOk">✅ Message sent! Kapil will get back to you soon.</div>
-      <button class="btn btn-gold" id="formBtn"><span>Send Message</span></button>
+      <div class="form-success" id="formOk">✅ Message sent! Kapil will get back to you soon.</div>
+      <button class="btn btn-primary" id="formBtn">Send Message</button>
     </div>
   </div>
 </div>
 
 <footer>
   <div class="footer-brand">Kapil Singh</div>
-  <div class="footer-info">Delhi, India &nbsp;·&nbsp; <a href="mailto:kapilsingh0550@gmail.com">kapilsingh0550@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+917011714253">+91 70117 14253</a></div>
+  <div class="footer-info">Delhi, India &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection#d2b9b3a2bbbea1bbbcb5bae2e7e7e292b5bfb3bbbefcb1bdbf"><span class="__cf_email__" data-cfemail="214a4051484d52484f46491114141161464c40484d0f424e4c">[email&#160;protected]</span></a> &nbsp;·&nbsp; <a href="tel:+917011714253">+91 70117 14253</a></div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── THEME ──
-const html=document.documentElement;
-const saved=localStorage.getItem('ks_theme');
-if(saved)html.dataset.theme=saved;
-document.getElementById('themeToggle').onclick=()=>{
-  const t=html.dataset.theme==='dark'?'light':'dark';
-  html.dataset.theme=t;localStorage.setItem('ks_theme',t);
-  if(radarInst)setTimeout(buildRadar,400);
+const html = document.documentElement;
+const saved = localStorage.getItem('ks_theme2');
+if (saved) html.dataset.theme = saved;
+document.getElementById('themeBtn').onclick = () => {
+  const t = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  html.dataset.theme = t;
+  localStorage.setItem('ks_theme2', t);
 };
 
-// ── NAV ──
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 40);
+});
+
+// ── BACKGROUND CANVAS ──
+(function() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, dots;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initDots(); });
+
+  function initDots() {
+    dots = Array.from({ length: 55 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+    }));
+  }
+  initDots();
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    const isDark = html.dataset.theme !== 'light';
+    const dotColor = isDark ? '200,169,110' : '154,115,64';
+
+    dots.forEach(d => {
+      d.x += d.vx;
+      d.y += d.vy;
+      if (d.x < 0 || d.x > W) d.vx *= -1;
+      if (d.y < 0 || d.y > H) d.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${dotColor}, 0.5)`;
+      ctx.fill();
+    });
+
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x;
+        const dy = dots[i].y - dots[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = `rgba(${dotColor}, ${0.12 * (1 - dist / 130)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
 
 // ── TYPING ──
-const words=['Team Lead','QA Expert','Operations Leader','AI Quality Specialist','Mentor & Coach'];
-let wi=0,ci=0,del=false,pause=0;
-const tel=document.getElementById('typingEl');
-function type(){
-  if(pause-->0){setTimeout(type,60);return}
-  if(!del){
-    tel.textContent=words[wi].slice(0,++ci);
-    if(ci>=words[wi].length){pause=22;del=true}
-    setTimeout(type,85);
+const words = ['Team Lead', 'QA Expert', 'Operations Leader', 'AI Quality Specialist', 'Mentor & Coach'];
+let wi = 0, ci = 0, deleting = false, pause = 0;
+const tel = document.getElementById('typingEl');
+function type() {
+  if (pause-- > 0) { setTimeout(type, 60); return; }
+  if (!deleting) {
+    tel.textContent = words[wi].slice(0, ++ci);
+    if (ci >= words[wi].length) { pause = 24; deleting = true; }
+    setTimeout(type, 85);
   } else {
-    tel.textContent=words[wi].slice(0,--ci);
-    if(ci<=0){wi=(wi+1)%words.length;del=false;pause=4}
-    setTimeout(type,48);
+    tel.textContent = words[wi].slice(0, --ci);
+    if (ci <= 0) { wi = (wi + 1) % words.length; deleting = false; pause = 5; }
+    setTimeout(type, 48);
   }
 }
 type();
 
-// ── SCROLL REVEAL — content visible by default, JS adds animation ──
-document.querySelectorAll('.sr').forEach(el=>{
-  el.classList.add('hidden');
-});
-const ro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}
+// ── SCROLL REVEAL ──
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
   });
-},{threshold:0.08});
-document.querySelectorAll('.sr').forEach(el=>ro.observe(el));
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// ── TIMELINE DRAW ──
-const track=document.getElementById('tlTrack');
-const tlo=new IntersectionObserver(([e])=>{if(e.isIntersecting){track.classList.add('drawn');tlo.disconnect()}},{threshold:0.1});
-tlo.observe(track);
+// ── TIMELINE SPINE ──
+const spine = document.getElementById('tlSpine');
+const spineOb = new IntersectionObserver(([e]) => {
+  if (e.isIntersecting) { spine.classList.add('drawn'); spineOb.disconnect(); }
+}, { threshold: 0.1 });
+spineOb.observe(spine);
 
 // ── COUNT UP ──
-function countUp(el,target,suffix=''){
-  let n=0;const step=Math.ceil(target/55);
-  const iv=setInterval(()=>{n=Math.min(n+step,target);el.textContent=n.toLocaleString()+suffix;if(n>=target)clearInterval(iv)},28);
+function countUp(el, target, suffix) {
+  let n = 0; const step = Math.ceil(target / 55);
+  const iv = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = n.toLocaleString() + (suffix || '');
+    if (n >= target) clearInterval(iv);
+  }, 28);
 }
-const cuo=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.querySelectorAll('[data-count]').forEach(el=>{
-        countUp(el,+el.dataset.count,el.dataset.suffix||'');
+const cOb = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-count]').forEach(el => {
+        countUp(el, +el.dataset.count, el.dataset.suffix || '');
       });
-      cuo.unobserve(e.target);
+      cOb.unobserve(e.target);
     }
   });
-},{threshold:0.3});
-document.querySelectorAll('.stats-bar,.dash-metrics').forEach(s=>cuo.observe(s));
+}, { threshold: 0.3 });
+document.querySelectorAll('.stats, .metrics').forEach(s => cOb.observe(s));
 
-// ── BARS ANIMATE ──
-const baro=new IntersectionObserver(([e])=>{
-  if(e.isIntersecting){
-    e.target.querySelectorAll('[data-w]').forEach(b=>b.style.width=b.dataset.w+'%');
-    baro.unobserve(e.target);
+// ── BAR ANIMATE ──
+const barOb = new IntersectionObserver(([e]) => {
+  if (e.isIntersecting) {
+    e.target.querySelectorAll('[data-w]').forEach(b => b.style.width = b.dataset.w + '%');
+    barOb.unobserve(e.target);
   }
-},{threshold:0.2});
-document.querySelectorAll('.dash-box,.skill-bars').forEach(s=>baro.observe(s));
+}, { threshold: 0.15 });
+document.querySelectorAll('.dash, #skillList').forEach(s => barOb.observe(s));
 
 // ── VISITOR COUNT ──
-let v=parseInt(localStorage.getItem('ks_v')||'1247')+1;
-localStorage.setItem('ks_v',v);
-const vcEl=document.getElementById('vc');
-let vn=0;const vi=setInterval(()=>{vn+=Math.ceil(v/55);if(vn>=v){vn=v;clearInterval(vi)}vcEl.textContent=vn.toLocaleString()},25);
-
-// ── RADAR CHART ──
-let radarInst=null;
-function buildRadar(){
-  const dark=html.dataset.theme!=='light';
-  const g=dark?'rgba(212,168,83,1)':'rgba(184,137,42,1)';
-  const gf=dark?'rgba(212,168,83,0.15)':'rgba(184,137,42,0.12)';
-  const grid=dark?'rgba(212,168,83,0.12)':'rgba(184,137,42,0.18)';
-  const labels_color=dark?'rgba(255,255,255,0.6)':'rgba(26,26,26,0.65)';
-  if(radarInst)radarInst.destroy();
-  radarInst=new Chart(document.getElementById('radarChart'),{
-    type:'radar',
-    data:{
-      labels:['Leadership','QA Process','Communication','Documentation','Automation','Problem Solving'],
-      datasets:[{data:[90,95,87,85,70,88],borderColor:g,backgroundColor:gf,pointBackgroundColor:g,pointBorderColor:'transparent',borderWidth:2,pointRadius:4}]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:true,
-      plugins:{legend:{display:false}},
-      scales:{r:{
-        grid:{color:grid},angleLines:{color:grid},
-        ticks:{display:false},suggestedMin:0,suggestedMax:100,
-        pointLabels:{color:labels_color,font:{size:11,family:'Outfit'}}
-      }}
-    }
-  });
-}
-// Build radar only after Chart.js is ready
-window.addEventListener('load',buildRadar);
+let v = parseInt(localStorage.getItem('ks_v2') || '1247') + 1;
+localStorage.setItem('ks_v2', v);
+const vcEl = document.getElementById('vc');
+let vn = 0;
+const vi = setInterval(() => {
+  vn += Math.ceil(v / 55); if (vn >= v) { vn = v; clearInterval(vi); }
+  vcEl.textContent = vn.toLocaleString();
+}, 25);
 
 // ── CONTACT FORM ──
-document.getElementById('formBtn').onclick=()=>{
-  const n=document.getElementById('cName').value.trim();
-  const e=document.getElementById('cEmail').value.trim();
-  const m=document.getElementById('cMsg').value.trim();
-  if(!n||!e||!m){alert('Please fill in your name, email, and message.');return}
-  const ok=document.getElementById('formOk');
-  ok.style.display='flex';
-  document.getElementById('cName').value='';
-  document.getElementById('cEmail').value='';
-  document.getElementById('cSubject').value='';
-  document.getElementById('cMsg').value='';
-  setTimeout(()=>ok.style.display='none',4000);
+document.getElementById('formBtn').onclick = () => {
+  const n = document.getElementById('cName').value.trim();
+  const e = document.getElementById('cEmail').value.trim();
+  const m = document.getElementById('cMsg').value.trim();
+  if (!n || !e || !m) { alert('Please fill in your name, email, and message.'); return; }
+  const ok = document.getElementById('formOk');
+  ok.classList.add('show');
+  ['cName','cEmail','cSubject','cMsg'].forEach(id => document.getElementById(id).value = '');
+  setTimeout(() => ok.classList.remove('show'), 4500);
 };
 
-// ── DOWNLOAD CV ──
-document.getElementById('dlCV').onclick=e=>{
+// ── CV DOWNLOAD ──
+document.getElementById('dlCV').onclick = e => {
   e.preventDefault();
-  alert('To enable CV download:\n1. Save your PDF as "Kapil_Singh_CV.pdf"\n2. Put it in the same folder as this HTML file\n3. The button will download it automatically.\n\nFor now, share your portfolio link instead!');
+  alert('To enable CV download:\n1. Save your PDF as "Kapil_Singh_CV.pdf"\n2. Put it in the same folder as this file\n3. The button will download it automatically.');
 };
+
+// ── CUSTOM CURSOR ──
+(function() {
+  const dot  = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = -200, my = -200;
+  let rx = -200, ry = -200;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function loop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  const sel = 'a, button, .btn, .tool-card, .ach-card, .post-card, .testi-card, .info-item, .contact-row, .stat, .metric, .social-pill, .edu-card';
+  document.querySelectorAll(sel).forEach(el => {
+    el.addEventListener('mouseenter', () => { dot.classList.add('hovering'); ring.classList.add('hovering'); });
+    el.addEventListener('mouseleave', () => { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+  });
+
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity = ''; ring.style.opacity = ''; });
+})();
 </script>
 </body>
 </html>
